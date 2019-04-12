@@ -37,10 +37,10 @@
   WHERE stopa.name = 'Craiglockhart' AND stopb.name = 'London Road';
 
 -- 7. Give a list of all the services which connect stops 115 and 137 ('Haymarket' and 'Leith')
-  SELECT a.company, a.num
-  FROM route AS a
-  JOIN route b ON a.stop = b.stop
-  WHERE a.stop = 115 AND b.stop = 117;
+  SELECT DISTINCT a.company, a.num
+  FROM route a
+  JOIN route b ON a.company = b.company AND a.num = b.num
+  WHERE a.stop = 115 AND b.stop = 137;
 
 -- 8. Give a list of the services which connect the stops 'Craiglockhart' and 'Tollcross'
   SELECT a.company, a.num
@@ -53,9 +53,9 @@
 -- 9. Give a distinct list of the stops which may be reached from 'Craiglockhart'
 -- by taking one bus, including 'Craiglockhart' itself, offered by the LRT company.
 -- Include the company and bus no. of the relevant services.
-SELECT DISTINCT st2.name, rt2.company, rt2.num
-FROM stops st1, stops st2, route rt1, route rt2
-WHERE st1.name = 'Craiglockhart'
+  SELECT DISTINCT st2.name, rt2.company, rt2.num
+  FROM stops st1, stops st2, route rt1, route rt2
+  WHERE st1.name = 'Craiglockhart'
   AND st1.id = rt1.stop
   AND rt1.company = rt2.company AND rt1.num = rt2.num
   AND rt2.stop = st2.id;
@@ -63,13 +63,13 @@ WHERE st1.name = 'Craiglockhart'
 -- 10. Find the routes involving two buses that can go from Craiglockhart to Lochend.
 -- Show the bus no. and company for the first bus, the name of the stop for the transfer,
 -- and the bus no. and company for the second bus.
-SELECT a.num, a.company, STB.name, c.num, c.company
-FROM route a, route b, route c, route d, stops STA, stops STA, stops STB, stops STC, stops STD
-WHERE (a.company = b.company AND a.num = b.num)
-AND (c.company = d.company AND c.num = d.num)
-AND a.stop = STA.id
-AND b.stop = STB.id
-AND c.stop = STC.id
-AND d.stop = STD.id
-AND STA.name = 'Craiglockhart' AND STD.name = 'Lochend' AND STB.name = STC.name
-ORDER BY b.num, STB.name, d.num, LENGTH(a.num), LENGTH(c.num);
+  SELECT a.num, a.company, STB.name, c.num, c.company
+  FROM route a, route b, route c, route d, stops STA, stops STB, stops STC, stops STD
+  WHERE (a.company = b.company AND a.num = b.num)
+  AND (c.company = d.company AND c.num = d.num)
+  AND a.stop = STA.id
+  AND b.stop = STB.id
+  AND c.stop = STC.id
+  AND d.stop = STD.id
+  AND STA.name = 'Craiglockhart' AND STD.name = 'Lochend' AND STB.name = STC.name
+  ORDER BY b.num, STB.name, d.num, LENGTH(a.num), LENGTH(c.num);
