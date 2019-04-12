@@ -9,7 +9,8 @@
 
 -- 3. List all of the Star Trek movies, include the id, title and yr (all of these movies include the words Star Trek in the title). Order results by year.
   SELECT id, title, yr FROM movie
-  WHERE title LIKE '%star trek%';
+  WHERE title LIKE '%star trek%'
+  ORDER BY yr;
 
 -- 4. What id number does the actor 'Glenn Close' have?
   SELECT id FROM actor
